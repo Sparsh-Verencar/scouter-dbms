@@ -1,0 +1,77 @@
+.recruiter-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f4f6fa;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e40af;
+  color: white;
+  padding: 1rem 2rem;
+  border-bottom: 3px solid #3b82f6;
+}
+
+.nav-links button {
+  margin-left: 1rem;
+  background: white;
+  color: #1e40af;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.nav-links button:hover {
+  background: #3b82f6;
+  color: white;
+}
+
+.main-content {
+  display: flex;
+  padding: 20px;
+}
+
+.recruiter-profile {
+  flex: 0 0 25%;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #3b82f6;
+  margin-bottom: 10px;
+}
+
+.content-box {
+  flex: 1;
+  background: white;
+  margin-left: 20px;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.recruiter-form input, .recruiter-form button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 8px;
+}
+
+.review-card {
+  background: #f1f5f9;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
