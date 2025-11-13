@@ -18,7 +18,7 @@ yarn dev
 pnpm dev
 # or
 bun dev
-
+```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see **Scouter** in action.
 
 You can start editing the homepage by modifying `app/page.js`. The page auto-updates as you edit the file.
