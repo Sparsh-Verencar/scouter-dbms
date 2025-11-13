@@ -7,7 +7,7 @@ export default function Home() {
       <Button>
         sparsh
       </Button>
-        <ModeToggle/>
+      <ModeToggle/>
     </div>
   );
 }
