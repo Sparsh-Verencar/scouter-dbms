@@ -13,7 +13,7 @@ jobs:
     Deploy_Production:
         runs-on: ubuntu-latest
         steps:
-            - users: actions/checkout@v3
+            - uses: actions/checkout@v3
 
             - name: Install Vercel CLI
               run: npm install --global Vercel
