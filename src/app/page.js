@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // export default function RecruiterPage() {
 //   return (
 //     <div style={{ padding: "40px", textAlign: "center" }}>
@@ -80,6 +81,18 @@ export default function RecruiterDashboard() {
           {selectedJob && <ReviewSection job={selectedJob} assignJob={assignJob} />}
         </div>
       </div>
+=======
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/mode-toggle";
+export default function Home() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+      <Button>
+        sparsh vaibhav balaji
+      </Button>
+      <ModeToggle/>
+>>>>>>> df157b9c46580bc4251eecdda1723acaa1ed1b6a
     </div>
   );
 }
