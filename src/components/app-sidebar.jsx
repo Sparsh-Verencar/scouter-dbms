@@ -33,18 +33,18 @@ import {
 const data = {
   navMain: [
     {
-      title: "Profile",
+      title: "Portfolio",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "Portfolio",
-          url: "freelancer-dashboard/portfolio",
+          title: "Profile",
+          url: "/freelancer-dashboard/portfolio/profile",
         },
         {
           title: "Projects",
-          url: "/projects",
+          url: "/freelancer-dashboard/portfolio/projects",
         },
       ],
     },
