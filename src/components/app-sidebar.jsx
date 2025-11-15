@@ -40,11 +40,11 @@ const data = {
       items: [
         {
           title: "Portfolio",
-          url: "#",
+          url: "freelancer-dashboard/portfolio",
         },
         {
           title: "Projects",
-          url: "#",
+          url: "/projects",
         },
       ],
     },
