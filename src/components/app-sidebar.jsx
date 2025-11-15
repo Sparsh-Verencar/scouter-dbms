@@ -54,7 +54,7 @@ const data = {
       icon: Bot,
       items: [
         {
-          title: "Applied Jobs",
+          title: "Apply Jobs",
           url: "#",
         },
         {
