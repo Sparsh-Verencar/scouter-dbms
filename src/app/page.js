@@ -3,9 +3,12 @@
 import { motion } from "motion/react";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { NewButton } from "@/components/ui/movingborder";
-import React from "react";
+import React, { use } from "react";
+import {useRouter} from "next/navigation";
 export default function Home() {
-  return (
+    
+  const router = useRouter();
+return (
     <AuroraBackground>
       <motion.div
         initial={{ opacity: 0.0, y: 40 }}
@@ -17,13 +20,13 @@ export default function Home() {
         }}
         className="relative flex flex-col gap-4 items-center justify-center px-4"
       >
-      <div className="flex space-x-10 min-h-screen items-center justify-center bg-zinc-50 dark:bg-black">
+      <div className="flex space-x-10 min-h-screen items-center justify-center">
         <NewButton borderRadius="1.75rem"
-        className="bg-black dark:bg-slate-200 text-white text-xl font-semibold dark:text-white border-green-500 dark:border-yellow-300">
+        className="bg-black dark:bg-slate-800 text-white text-xl font-semibold dark:text-white border-green-500 dark:border-yellow-300">
         Recruiter
       </NewButton>
-      <NewButton borderRadius="1.75rem"
-        className="bg-black dark:bg-slate-200 text-white text-xl font-semibold dark:text-white border-red-500 dark:border-yellow-300">
+      <NewButton onClick={() => router.push("/freelancer-dashboard")} borderRadius="1.75rem"
+        className="bg-black dark:bg-slate-800 text-white text-xl font-semibold dark:text-white border-red-500 dark:border-yellow-300">
         Freelancer
       </NewButton>
     </div>
