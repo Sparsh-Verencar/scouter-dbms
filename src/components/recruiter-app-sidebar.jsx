@@ -28,7 +28,7 @@ import {
 // This is sample data.
 const data = {
   navMain: [
-    {
+    /*{
       title: "Portfolio",
       url: "#",
       icon: SquareTerminal,
@@ -43,7 +43,7 @@ const data = {
           url: "/freelancer-dashboard/portfolio/projects",
         },
       ],
-    },
+    },*/   
     {
       title: "Jobs",
       url: "#",
@@ -87,7 +87,7 @@ const data = {
 
 
 
-export function AppSidebar({
+export function RecruiterAppSidebar({
   ...props
 }) {
   const router = useRouter()
@@ -114,7 +114,7 @@ const handleFreelancerLogout = async () => {
             className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-medium">Racnerev</span>
+            <span className="truncate font-medium">Racnerev-recruiter</span>
             <span className="truncate text-xs">free</span>
           </div>
           <ChevronsUpDown className="ml-auto" />
