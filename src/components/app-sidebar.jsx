@@ -19,6 +19,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { Logo } from "./logo"
 
 // This is sample data.
 const data = {
@@ -66,7 +67,6 @@ const data = {
 export function AppSidebar({
   ...props
 }) {
-  const router = useRouter()
   const { user, loading } = useUser();
   
   
@@ -79,6 +79,7 @@ export function AppSidebar({
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
           <div
             className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+              {/* logo here */}
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
             {loading ? (
