@@ -1,6 +1,7 @@
 "use client"
 
 import { ChevronRight, DoorClosedIcon, SettingsIcon } from "lucide-react";
+import { useRouter } from "next/navigation"
 
 import {
   Collapsible,
@@ -21,6 +22,8 @@ import {
 export function NavMain({
   items
 }) {
+  const router = useRouter()
+
   const handleFreelancerLogout = async () => {
     try {
       console.log("logout clicked")
