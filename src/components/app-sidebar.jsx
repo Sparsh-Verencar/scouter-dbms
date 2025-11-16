@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "./ui/button"
+import { useUser } from "@/hooks/useUser"
 import {
   Bot,
   ChevronsUpDown,
@@ -10,19 +10,14 @@ import {
   SquareTerminal,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-
 import { NavMain } from "@/components/nav-main"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarMenu
 } from "@/components/ui/sidebar"
 
 // This is sample data.
@@ -91,6 +86,7 @@ export function AppSidebar({
   ...props
 }) {
   const router = useRouter()
+  const { user, loading } = useUser();
 const handleFreelancerLogout = async () => {
   try {
     console.log("logout clicked")
@@ -114,8 +110,17 @@ const handleFreelancerLogout = async () => {
             className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-medium">Racnerev</span>
-            <span className="truncate text-xs">free</span>
+            {loading ? (
+              <>
+                <span className="truncate font-medium">Loading...</span>
+                <span className="truncate text-xs"></span>
+              </>
+            ) : (
+              <>
+                <span className="truncate font-medium">{user?.full_name}</span>
+                <span className="truncate text-xs">{user?.category}</span>
+              </>
+            )}
           </div>
           <ChevronsUpDown className="ml-auto" />
         </SidebarMenuButton>
