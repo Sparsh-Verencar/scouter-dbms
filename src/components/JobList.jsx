@@ -11,7 +11,7 @@ export default function JobList() {
   useEffect(() => {
     async function fetchJobs() {
       try {
-        const res = await fetch("http://localhost:3000/api/jobs",  { method: "GET" }); // <-- your Express endpoint
+        const res = await fetch("http://localhost:3001/api/jobs",  { method: "GET" }); // <-- your Express endpoint
         const data = await res.json();
         setJobs(data.filter(job => job.open === true)); // only OPEN jobs
       } catch (err) {
