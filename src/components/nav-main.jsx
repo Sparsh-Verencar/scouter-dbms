@@ -1,7 +1,6 @@
 "use client"
 
 import { ChevronRight, DoorClosedIcon, SettingsIcon } from "lucide-react";
-import { useRouter } from "next/navigation"
 
 import {
   Collapsible,
@@ -18,41 +17,13 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import Dialog02 from "./deleteAccount";
+import DeleteAccount from "./deleteAccount";
+import Logout from "./logout";
 
 export function NavMain({
   items
 }) {
-  const router = useRouter()
-
-  const handleFreelancerLogout = async () => {
-    try {
-      console.log("logout clicked")
-      await fetch("http://localhost:3001/api/auth/freelancer-logout", {
-        method: "POST",
-        credentials: "include", // VERY IMPORTANT — includes your auth cookie
-      });
-      // redirect to login page
-      router.push("/freelancer-login");
-    } catch (err) {
-      console.log("Logout error:", err);
-    }
-  }
-  async function deleteAccount() {
-    const res = await fetch("http://localhost:3001/api/auth/freelancer-delete", {
-      method: "DELETE",
-      credentials: "include",
-    });
-
-    const data = await res.json();
-    console.log(data);
-
-    if (res.ok) {
-      alert("Account deleted");
-      router.push("/"); // redirect
-    } else {
-      alert(data.error || "Error deleting account");
-    }
-  }
   return (
     <SidebarGroup>
       <SidebarGroupLabel>User info</SidebarGroupLabel>
@@ -105,13 +76,11 @@ export function NavMain({
             <CollapsibleContent>
               <SidebarMenuSub>
                 <SidebarMenuItem>
-                  <SidebarMenuButton onClick={handleFreelancerLogout}>
-                    <DoorClosedIcon />
-                    <span>Logout</span>
+                  <SidebarMenuButton>
+                    <Logout />
                   </SidebarMenuButton>
-                  <SidebarMenuButton onClick={deleteAccount}>
-                    <DoorClosedIcon />
-                    <span>Delete Account</span>
+                  <SidebarMenuButton>
+                    <DeleteAccount />
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarMenuSub>
