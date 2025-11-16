@@ -7,6 +7,7 @@ import React from 'react'
 import { cn } from '@/lib/utils'
 import { NewButton } from './ui/movingborder'
 import { useRouter } from "next/navigation";
+import Image from 'next/image'
 
 export const HeroHeader = () => {
     const [menuState, setMenuState] = React.useState(false)
@@ -32,7 +33,13 @@ export const HeroHeader = () => {
                         className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
                         <div className="flex w-full justify-between lg:w-auto">
                             <Link href="/" aria-label="home" className="flex items-center space-x-2">
-                                <Logo />
+                                <Image
+                                width={50}
+                                height={50}
+                                src={"/scouterLogo-removebg-preview.png"}
+                                alt='scouter logo'
+                                />
+                                <h1 className='pl-2 text-3xl'>Scouter</h1>
                             </Link>
 
                             <button
