@@ -56,7 +56,7 @@ export const HeroHeader = () => {
                                     className="bg-black dark:bg-slate-800 text-white text-xl font-semibold dark:text-white border-green-500 dark:border-yellow-300">
                                     Recruiter
                                 </NewButton>
-                                <NewButton onClick={() => router.push("/freelancer-dashboard")} borderRadius="1.75rem"
+                                <NewButton onClick={() => router.push("/freelancer-login")} borderRadius="1.75rem"
                                     className="bg-black dark:bg-slate-800 text-white text-xl font-semibold dark:text-white border-red-500 dark:border-yellow-300">
                                     Freelancer
                                 </NewButton>
