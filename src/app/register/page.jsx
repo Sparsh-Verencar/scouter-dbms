@@ -9,6 +9,10 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
 
+  // IMPORTANT: frontend must know the backend URL via NEXT_PUBLIC_API_URL
+  // Put NEXT_PUBLIC_API_URL=http://localhost:4000 in your frontend .env.local
+  const API = process.env.NEXT_PUBLIC_API_URL || '';
+
   async function handleSubmit(e) {
     e.preventDefault();
     setErr('');
@@ -27,8 +31,11 @@ export default function RegisterPage() {
     }
 
     try {
-      const res = await fetch('/api/register', {
+      if (!API) throw new Error('Backend API URL not configured. Set NEXT_PUBLIC_API_URL in .env.local');
+
+      const res = await fetch(`${API}/api/auth/register`, {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name }),
       });
