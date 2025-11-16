@@ -22,9 +22,7 @@ export default function DashboardLayout({ children }) {
 
   // Dynamically derive breadcrumb title
   const pageTitle = pathname.split("/").pop(); // e.g., "portfolio"
-  console.log(pageTitle)
   const formattedTitle = pageTitle?.charAt(0).toUpperCase() + pageTitle?.slice(1);
-  console.log(formattedTitle)
 
 
   return (

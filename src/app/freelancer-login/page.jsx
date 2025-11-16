@@ -24,7 +24,7 @@ export default function LoginPage() {
       return;
     }
     try {
-      const res = await fetch('/api/login', {
+      const res = await fetch('http://localhost:3001/api/auth/freelancer-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password: pwd }),
@@ -78,7 +78,7 @@ export default function LoginPage() {
 
             <Button className="w-full" type="submit" disabled={loading}>{loading ? 'Signing in...' : 'Sign In'}</Button>
             <p className="text-center text-sm mt-2">
-              Don't have an account? <Link href="/register" className="underline">Register</Link>
+              Don't have an account? <Link href="/freelancer-register" className="underline">Register</Link>
             </p>
           </div>
         </div>
