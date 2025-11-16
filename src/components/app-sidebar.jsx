@@ -71,10 +71,6 @@ const data = {
           title: "Edit Profile",
           url: "#",
         },
-        {
-          title: "Delete Account",
-          url: "#",
-        },
       ],
     },
   ],
@@ -87,19 +83,36 @@ export function AppSidebar({
 }) {
   const router = useRouter()
   const { user, loading } = useUser();
-const handleFreelancerLogout = async () => {
-  try {
-    console.log("logout clicked")
-    await fetch("http://localhost:3001/api/auth/freelancer-logout", {
-      method: "POST",
-      credentials: "include", // VERY IMPORTANT — includes your auth cookie
-    });
-    // redirect to login page
-    router.push("/freelancer-login");
-  } catch (err) {
-    console.log("Logout error:", err);
+  const handleFreelancerLogout = async () => {
+    try {
+      console.log("logout clicked")
+      await fetch("http://localhost:3001/api/auth/freelancer-logout", {
+        method: "POST",
+        credentials: "include", // VERY IMPORTANT — includes your auth cookie
+      });
+      // redirect to login page
+      router.push("/freelancer-login");
+    } catch (err) {
+      console.log("Logout error:", err);
+    }
   }
-}
+  async function deleteAccount() {
+    const res = await fetch("http://localhost:3001/api/auth/freelancer-delete", {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    if (res.ok) {
+      alert("Account deleted");
+      router.push("/"); // redirect
+    } else {
+      alert(data.error || "Error deleting account");
+    }
+  }
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -131,6 +144,10 @@ const handleFreelancerLogout = async () => {
           <SidebarMenuButton onClick={handleFreelancerLogout}>
             <DoorClosedIcon />
             <span>Logout</span>
+          </SidebarMenuButton>
+          <SidebarMenuButton onClick={deleteAccount}>
+            <DoorClosedIcon />
+            <span>Delete Account</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarContent>
