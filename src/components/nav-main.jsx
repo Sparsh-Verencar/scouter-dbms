@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, DoorClosedIcon, SettingsIcon } from "lucide-react";
 
 import {
   Collapsible,
@@ -17,6 +17,9 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import Dialog02 from "./deleteAccount";
+import DeleteAccount from "./deleteAccount";
+import Logout from "./logout";
 
 export function NavMain({
   items
@@ -56,6 +59,34 @@ export function NavMain({
             </SidebarMenuItem>
           </Collapsible>
         ))}
+      </SidebarMenu>
+      <SidebarMenu>
+        <Collapsible
+          asChild
+          className="group/collapsible">
+          <SidebarMenuItem>
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton tooltip="settings">
+                <SettingsIcon />
+                <span>Settings</span>
+                <ChevronRight
+                  className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+              </SidebarMenuButton>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <SidebarMenuSub>
+                <SidebarMenuItem>
+                  <SidebarMenuButton>
+                    <Logout />
+                  </SidebarMenuButton>
+                  <SidebarMenuButton>
+                    <DeleteAccount />
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenuSub>
+            </CollapsibleContent>
+          </SidebarMenuItem>
+        </Collapsible>
       </SidebarMenu>
     </SidebarGroup>
   );
