@@ -70,7 +70,7 @@ export default function HeroSection() {
                                 },
                             }}
                             className="mask-b-from-35% mask-b-to-90% absolute inset-0 top-56 -z-20 lg:top-32">
-                           
+
                         </AnimatedGroup>
 
                         <div
@@ -79,27 +79,45 @@ export default function HeroSection() {
 
                         <div className="mx-auto max-w-7xl px-6">
                             <div className="text-center sm:mx-auto lg:mr-auto lg:mt-0">
-                                
+
+                                {/* Main title */}
                                 <TextEffect
                                     preset="fade-in-blur"
                                     speedSegment={0.3}
                                     as="h1"
-                                    className="mx-auto mt-8 max-w-4xl text-balance text-5xl max-md:font-semibold md:text-7xl lg:mt-16 xl:text-[5.25rem]">
+                                    className="mx-auto mt-8 max-w-4xl text-balance text-5xl max-md:font-semibold md:text-7xl lg:mt-16 xl:text-[5.25rem]"
+                                >
                                     Scouter
                                 </TextEffect>
+
+                                {/* Subtitle */}
                                 <TextEffect
                                     per="line"
                                     preset="fade-in-blur"
                                     speedSegment={0.3}
                                     delay={0.5}
                                     as="p"
-                                    className="mx-auto mt-8 max-w-2xl text-balance text-lg">
+                                    className="mx-auto mt-4 max-w-2xl text-balance text-lg text-gray-500 dark:text-gray-400"
+                                >
                                     Jobs Paradise
                                 </TextEffect>
 
-                               
+                                {/* Tagline / description */}
+                                <TextEffect
+                                    per="line"
+                                    preset="fade-in-blur"
+                                    speedSegment={0.3}
+                                    delay={1}
+                                    as="p"
+                                    className="mx-auto mt-4 max-w-3xl text-md text-gray-600 dark:text-gray-300"
+                                >
+                                    Connect talented freelancers with clients. Post projects, get hired, and grow your portfolio.    </TextEffect>
+
+
+
                             </div>
                         </div>
+
 
                         <AnimatedGroup
                             variants={{
@@ -119,7 +137,7 @@ export default function HeroSection() {
                                     className="inset-shadow-2xs ring-background dark:inset-shadow-white/20 bg-background relative mx-auto max-w-6xl overflow-hidden rounded-2xl border p-4 shadow-lg shadow-zinc-950/15 ring-1">
                                     <Image
                                         className="bg-background aspect-15/8 relative hidden rounded-2xl dark:block"
-                                        src="/mail2.png"
+                                        src="/DashboardPic.png"
                                         alt="app screen"
                                         width="2700"
                                         height="1440" />

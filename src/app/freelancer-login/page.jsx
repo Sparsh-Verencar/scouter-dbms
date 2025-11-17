@@ -28,6 +28,7 @@ export default function LoginPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password: pwd }),
+        credentials:"include"
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -48,7 +49,7 @@ export default function LoginPage() {
           <div>
             <Link href="/" aria-label="go home">
   <Image 
-    src="/logo.jpeg"
+    src="/scouterLogo-removebg-preview.png"
     alt="Logo"
     width={40}
     height={40}
