@@ -1,8 +1,9 @@
+import CompletedJobs from '@/components/freelancerFinishedJobsList'
 import React from 'react'
 
 const FinishedJobs = () => {
   return (
-    <div>FinishedJobs</div>
+    <div><CompletedJobs/></div>
   )
 }
 
