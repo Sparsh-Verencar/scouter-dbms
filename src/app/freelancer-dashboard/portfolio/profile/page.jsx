@@ -10,48 +10,59 @@ const ProfilePage = () => {
   const [portfolio, setPortfolio] = useState(null);
   const [portLoading, setPortLoading] = useState(true);
 
-  console.log("%c[ProfilePage] Render start", "color: yellow; font-weight: bold");
-  console.log("%cUser:", "color: cyan", user);
-  console.log("%cUser loading:", "color: cyan", loading);
+  // New state for job stats
+  const [stats, setStats] = useState({
+    totalApplied: 0,
+    ongoing: 0,
+    finished: 0,
+  });
 
   // FETCH PORTFOLIO
   useEffect(() => {
-    console.log("%c[useEffect] User changed:", "color: orange", user);
-
-    if (!user) {
-      console.log("%cNo user → portfolio fetch skipped", "color: red");
-      return;
-    }
+    if (!user) return;
 
     async function fetchPortfolio() {
-      console.log("%c[fetchPortfolio] Fetch started...", "color: purple");
-
       try {
         const res = await fetch("http://localhost:3001/api/portfolio/me", {
           method: "GET",
           credentials: "include",
         });
-
-        console.log("%c[fetchPortfolio] Response status:", "color: purple", res.status);
-
         const data = await res.json();
-        console.log("%c[fetchPortfolio] Response JSON:", "color: purple", data);
-
         setPortfolio(data.portfolio);
       } catch (err) {
         console.error("[fetchPortfolio] ERROR:", err);
       }
-
       setPortLoading(false);
-      console.log("%c[fetchPortfolio] Loading complete", "color: purple");
     }
 
     fetchPortfolio();
   }, [user]);
 
-  // Loading screen
+  // FETCH JOB STATS
+  useEffect(() => {
+    if (!user) return;
+
+    async function fetchStats() {
+      try {
+        const res = await fetch("http://localhost:3001/api/jobs/myStats", {
+          method: "GET",
+          credentials: "include",
+        });
+        const data = await res.json();
+        setStats({
+          totalApplied: data.totalApplied || 0,
+          ongoing: data.ongoing || 0,
+          finished: data.finished || 0,
+        });
+      } catch (err) {
+        console.error("[fetchStats] ERROR:", err);
+      }
+    }
+
+    fetchStats();
+  }, [user]);
+
   if (loading || portLoading) {
-    console.log("%cShowing: Loading screen", "color: gray");
     return (
       <div className="w-full h-screen flex items-center justify-center">
         Loading...
@@ -59,9 +70,7 @@ const ProfilePage = () => {
     );
   }
 
-  // Not logged in
   if (!user) {
-    console.log("%cShowing: Not logged in screen", "color: red");
     return (
       <div className="w-full h-screen flex items-center justify-center">
         Not logged in.
@@ -69,24 +78,17 @@ const ProfilePage = () => {
     );
   }
 
-  // No portfolio → show form
   if (!portfolio) {
-    console.log("%cNo portfolio found → showing form", "color: lightgreen");
     return (
       <div className="w-full h-screen flex items-center justify-center">
-        <PortfolioForm onCreated={() => {
-          console.log("%cPortfolio created → reloading page", "color: lightgreen");
-          window.location.reload();
-        }} />
+        <PortfolioForm onCreated={() => window.location.reload()} />
       </div>
     );
   }
 
-  // Portfolio exists → show card
-  console.log("%cPortfolio FOUND → rendering profile card", "color: green", portfolio);
-
+  // Layout with card + stats
   return (
-    <div className="w-full h-screen flex items-center justify-center">
+    <div className="w-full min-h-screen flex flex-col md:flex-row items-start justify-center gap-8 p-6 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <FreelancerProfileCard
         name={user.full_name}
         title={portfolio.title}
@@ -97,6 +99,27 @@ const ProfilePage = () => {
         description={portfolio._description}
         avatarUrl="/noProfileImage.jpg"
       />
+
+      <div className="flex flex-col gap-4 bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 w-full max-w-sm transition-colors duration-300">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+          Your Stats
+        </h2>
+
+        <div className="flex justify-between items-center">
+          <span className="text-gray-700 dark:text-gray-300">Total Applied:</span>
+          <span className="font-semibold text-gray-900 dark:text-gray-100">{stats.totalApplied}</span>
+        </div>
+
+        <div className="flex justify-between items-center">
+          <span className="text-gray-700 dark:text-gray-300">Ongoing:</span>
+          <span className="font-semibold text-yellow-500">{stats.ongoing}</span>
+        </div>
+
+        <div className="flex justify-between items-center">
+          <span className="text-gray-700 dark:text-gray-300">Finished:</span>
+          <span className="font-semibold text-green-500">{stats.finished}</span>
+        </div>
+      </div>
     </div>
   );
 };
