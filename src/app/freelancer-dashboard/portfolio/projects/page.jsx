@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input';
 const ProjectPage = () => {
   const [projects, setProjects] = useState([]);
   useEffect(() => {
-    
+
     fetchProjects();
   }, []);
   const fetchProjects = async () => {
@@ -34,7 +34,11 @@ const ProjectPage = () => {
       console.error('Error fetching projects:', err);
     }
   };
-  if (!projects.length) return <p className="text-center mt-12">No projects found.</p>;
+  if (!projects.length) return (
+    <h1 className='text-center text-gray-400'>
+    No projects found.
+    </h1>
+);
   const handleAddProject = async (e) => {
     e.preventDefault();
 
@@ -58,7 +62,6 @@ const ProjectPage = () => {
 
       if (!res.ok) throw new Error("Failed to add project");
 
-      const savedProject = await res.json();
 
       // Optional: Update UI instantly
       fetchProjects()
@@ -69,83 +72,87 @@ const ProjectPage = () => {
     }
   };
 
-  return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-8 text-center dark:text-white">My Projects</h1>
-      <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {/*add project card*/}
-        <div className="
-  w-full 
-  aspect-square 
-  dark:bg-gray-900 bg-amber-50 
-  p-6 flex flex-col items-center justify-center 
-  rounded-2xl shadow-md 
-  hover:shadow-xl hover:scale-105 
-  transition-transform duration-300
-">
-          <Dialog>
+    return (
+  <div className="max-w-7xl mx-auto px-4 py-12">
+    <h1 className="text-4xl font-bold mb-8 text-center dark:text-white">My Projects</h1>
 
-            {/* Trigger opens the dialog */}
-            <DialogTrigger asChild>
-              <div>
-                <h1 className='text-9xl hover:scale-105 transition-transform duration-300'>+</h1>
-                <p>Add Projects</p>
-              </div>
-            </DialogTrigger>
+    <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 
-            {/* Dialog Content contains the form */}
-            <DialogContent className="sm:max-w-[425px]">
-              <form onSubmit={handleAddProject}>
+      {/* Always show Add Project card */}
+      <div className="
+        w-full 
+        aspect-square 
+        dark:bg-gray-900 bg-amber-50 
+        p-6 flex flex-col items-center justify-center 
+        rounded-2xl shadow-md 
+        hover:shadow-xl hover:scale-105 
+        transition-transform duration-300
+      ">
+        <Dialog>
+          <DialogTrigger asChild>
+            <div>
+              <h1 className='text-9xl hover:scale-105 transition-transform duration-300'>+</h1>
+              <p>Add Projects</p>
+            </div>
+          </DialogTrigger>
 
-                <DialogHeader>
-                  <DialogTitle>Enter project details</DialogTitle>
-                  <DialogDescription>
-                    Adding projects can enhance your portfolio
-                  </DialogDescription>
-                </DialogHeader>
+          <DialogContent className="sm:max-w-[425px]">
+            <form onSubmit={handleAddProject}>
+              <DialogHeader>
+                <DialogTitle>Enter project details</DialogTitle>
+                <DialogDescription>
+                  Adding projects can enhance your portfolio
+                </DialogDescription>
+              </DialogHeader>
 
-                <div className="grid gap-4">
-                  <div className="grid gap-3">
-                    <Label htmlFor="title-1">Project Title</Label>
-                    <Input id="title-1" name="title" />
-                  </div>
-
-                  <div className="grid gap-3">
-                    <Label htmlFor="description-1">Project Description</Label>
-                    <Input id="description-1" name="description" />
-                  </div>
-
-                  <div className="grid gap-3">
-                    <Label htmlFor="link-1">Project Link</Label>
-                    <Input id="link-1" name="link" />
-                  </div>
+              <div className="grid gap-4">
+                <div className="grid gap-3">
+                  <Label htmlFor="title-1">Project Title</Label>
+                  <Input id="title-1" name="title" />
                 </div>
 
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </DialogClose>
+                <div className="grid gap-3">
+                  <Label htmlFor="description-1">Project Description</Label>
+                  <Input id="description-1" name="description" />
+                </div>
 
-                  <Button type="submit">Add Project</Button>
-                </DialogFooter>
+                <div className="grid gap-3">
+                  <Label htmlFor="link-1">Project Link</Label>
+                  <Input id="link-1" name="link" />
+                </div>
+              </div>
 
-              </form>
-            </DialogContent>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button variant="outline">Cancel</Button>
+                </DialogClose>
+                <Button type="submit">Add Project</Button>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </div>
 
-          </Dialog>
-        </div>
-
-        {projects.map((project, index) => (
+      {/* If no projects → show nothing else */}
+      {projects.length === 0 ? (
+        <p className="text-center col-span-full mt-6 text-lg opacity-70">
+          No projects yet — add your first one!
+        </p>
+      ) : (
+        projects.map((project, index) => (
           <ProjectCard
             key={index}
             title={project.project_title}
             description={project.project_description}
             link={project.project_link}
           />
-        ))}
-      </div>
+        ))
+      )}
+
     </div>
-  );
+  </div>
+);
+
 }
 
 export default ProjectPage;
