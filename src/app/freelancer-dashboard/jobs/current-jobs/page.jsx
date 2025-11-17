@@ -1,8 +1,8 @@
 import React from 'react'
-
+import OngoingJobs from '@/components/ui/FreelancerOngoingJobList'
 const CurrentJobs = () => {
   return (
-    <div>CurrentJobs</div>
+    <div><OngoingJobs/></div>
   )
 }
 
