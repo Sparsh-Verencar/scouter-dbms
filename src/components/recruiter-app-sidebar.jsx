@@ -1,5 +1,5 @@
 "use client"
-
+import Link from "next/link";
 import * as React from "react"
 import { Button } from "./ui/button"
 import {
@@ -28,7 +28,7 @@ import {
 // This is sample data.
 const data = {
   navMain: [
-    /*{
+    {
       title: "Portfolio",
       url: "#",
       icon: SquareTerminal,
@@ -36,49 +36,26 @@ const data = {
       items: [
         {
           title: "Profile",
-          url: "/freelancer-dashboard/portfolio/profile",
-        },
-        {
-          title: "Projects",
-          url: "/freelancer-dashboard/portfolio/projects",
+          url: "/recruiter-dashboard/portfolio/profile",
         },
       ],
-    },*/   
+    },  
     {
       title: "Jobs",
       url: "#",
       icon: Bot,
       items: [
         {
-          title: "Apply Jobs",
-          url: "/freelancer-dashboard/jobs/apply-jobs",
+          title: "Create Jobs",
+          url: "/recruiter-dashboard/jobs/create-jobs",
         },
         {
           title: "Current Jobs",
-          url: "/freelancer-dashboard/jobs/current-jobs",
+          url: "/recruiter-dashboard/jobs/current-jobs",
         },
         {
           title: "Finished Jobs",
-          url: "/freelancer-dashboard/jobs/finished-jobs",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Edit Profile",
-          url: "#",
-        },
-        {
-          title: "Delete Account",
-          url: "#",
+          url: "/recruiter-dashboard/jobs/finished-jobs",
         },
       ],
     },
@@ -91,15 +68,15 @@ export function RecruiterAppSidebar({
   ...props
 }) {
   const router = useRouter()
-const handleFreelancerLogout = async () => {
+const handlerecruiterLogout = async () => {
   try {
     console.log("logout clicked")
-    await fetch("http://localhost:3001/api/auth/freelancer-logout", {
+    await fetch("http://localhost:3001/api/auth/recruiter-logout", {
       method: "POST",
       credentials: "include", // VERY IMPORTANT — includes your auth cookie
     });
     // redirect to login page
-    router.push("/freelancer-login");
+    router.push("/recruiter-login");
   } catch (err) {
     console.log("Logout error:", err);
   }
@@ -123,9 +100,7 @@ const handleFreelancerLogout = async () => {
       <SidebarContent>
         <NavMain items={data.navMain} />
         <SidebarMenuItem>
-          <SidebarMenuButton onClick={handleFreelancerLogout}>
-            <DoorClosedIcon />
-            <span>Logout</span>
+          <SidebarMenuButton onClick={handlerecruiterLogout}>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarContent>

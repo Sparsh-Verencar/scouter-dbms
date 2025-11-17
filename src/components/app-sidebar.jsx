@@ -18,9 +18,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarMenu
 } from "@/components/ui/sidebar"
 import { Logo } from "./logo"
 
@@ -103,12 +100,6 @@ export function AppSidebar({
 
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <SidebarMenuItem>
-          <SidebarMenuButton onClick={handleFreelancerLogout}>
-            <DoorClosedIcon />
-            <span>Logout</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>

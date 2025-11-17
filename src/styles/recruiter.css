@@ -75,3 +75,35 @@
   margin: 10px 0;
   border-radius: 8px;
 }
+
+
+.create-job-container {
+  padding: 30px;
+  color: white;
+}
+
+.job-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 450px;
+}
+
+.job-form input,
+.job-form textarea,
+.job-form select {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #888;
+  background: #1f1f1f;
+  color: #fff;
+}
+
+.job-form button {
+  padding: 12px;
+  background: #4b6cff;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+}
