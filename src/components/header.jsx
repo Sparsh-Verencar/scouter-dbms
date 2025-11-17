@@ -52,7 +52,7 @@ export const HeroHeader = () => {
                             className="bg-background in-data-[state=active]:block lg:in-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent">
                             
                             <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                                <NewButton borderRadius="1.75rem"
+                                <NewButton onClick={() => router.push("/recruiter-login")} borderRadius="1.75rem"
                                     className="bg-black dark:bg-slate-800 text-white text-xl font-semibold dark:text-white border-green-500 dark:border-yellow-300">
                                     Recruiter
                                 </NewButton>
