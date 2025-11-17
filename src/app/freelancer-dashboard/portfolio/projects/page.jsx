@@ -34,11 +34,7 @@ const ProjectPage = () => {
       console.error('Error fetching projects:', err);
     }
   };
-  if (!projects.length) return (
-    <h1 className='text-center text-gray-400'>
-    No projects found.
-    </h1>
-);
+  
   const handleAddProject = async (e) => {
     e.preventDefault();
 
