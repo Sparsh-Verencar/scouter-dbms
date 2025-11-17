@@ -36,7 +36,7 @@ const data = {
       items: [
         {
           title: "Profile",
-          url: "/recruiter-dashboard/portfolio/profile",
+          url: "/recruiter-dashboard/profile",
         },
       ],
     },  

@@ -39,7 +39,7 @@ export default function DashboardLayout({ children }) {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/freelancer-dashboard">Dashboard</BreadcrumbLink>
+                <BreadcrumbLink href="/recruiter-dashboard">Dashboard</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
