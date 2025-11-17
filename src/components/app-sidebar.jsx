@@ -19,6 +19,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { Logo } from "./logo"
 
 // This is sample data.
 const data = {
@@ -27,7 +28,7 @@ const data = {
       title: "Portfolio",
       url: "#",
       icon: SquareTerminal,
-      isActive: true,
+      isActive: false,
       items: [
         {
           title: "Profile",
@@ -58,25 +59,6 @@ const data = {
         },
       ],
     },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Edit Profile",
-          url: "#",
-        },
-        {
-          title: "Delete Account",
-          url: "#",
-        },
-      ],
-    },
   ],
 }
 
@@ -85,21 +67,10 @@ const data = {
 export function AppSidebar({
   ...props
 }) {
-  const router = useRouter()
   const { user, loading } = useUser();
-const handleFreelancerLogout = async () => {
-  try {
-    console.log("logout clicked")
-    await fetch("http://localhost:3001/api/auth/freelancer-logout", {
-      method: "POST",
-      credentials: "include", // VERY IMPORTANT — includes your auth cookie
-    });
-    // redirect to login page
-    router.push("/freelancer-login");
-  } catch (err) {
-    console.log("Logout error:", err);
-  }
-}
+  
+  
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -108,6 +79,7 @@ const handleFreelancerLogout = async () => {
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
           <div
             className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+              {/* logo here */}
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
             {loading ? (
@@ -125,14 +97,9 @@ const handleFreelancerLogout = async () => {
           <ChevronsUpDown className="ml-auto" />
         </SidebarMenuButton>
       </SidebarHeader>
+
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <SidebarMenuItem>
-          <SidebarMenuButton onClick={handleFreelancerLogout}>
-            <DoorClosedIcon />
-            <span>Logout</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>

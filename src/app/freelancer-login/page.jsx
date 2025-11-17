@@ -49,7 +49,7 @@ export default function LoginPage() {
           <div>
             <Link href="/" aria-label="go home">
   <Image 
-    src="/logo.jpeg"
+    src="/scouterLogo-removebg-preview.png"
     alt="Logo"
     width={40}
     height={40}
