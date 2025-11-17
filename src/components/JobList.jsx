@@ -11,9 +11,11 @@ export default function JobList() {
   useEffect(() => {
     async function fetchJobs() {
       try {
-        const res = await fetch("http://localhost:3001/api/jobs",  { method: "GET" }); // <-- your Express endpoint
+        const res = await fetch("http://localhost:3001/api/jobs/getFreeJobs");
         const data = await res.json();
-        setJobs(data.filter(job => job.open === true)); // only OPEN jobs
+        console.log("Jobs fetched:", data);
+        // Backend should already return only Open + Unassigned
+        setJobs(data);
       } catch (err) {
         console.error("Error fetching jobs:", err);
       }
@@ -48,9 +50,9 @@ export default function JobList() {
           >
             <div className="bg-white dark:bg-neutral-900 rounded-2xl max-w-lg w-full p-6 shadow-xl">
               <h2 className="text-2xl font-bold mb-2">{activeJob.title}</h2>
-              <p className="text-neutral-500 mb-4">{activeJob.company}</p>
+              <p className="text-neutral-500 mb-2">{activeJob.location}</p>
               <p className="text-neutral-700 dark:text-neutral-300">
-                {activeJob.description}
+                {activeJob._description}
               </p>
 
               <button
@@ -72,15 +74,15 @@ export default function JobList() {
 
         {jobs.map(job => (
           <motion.div
-            key={job._id}
+            key={job.job_id}
             className="p-4 bg-white dark:bg-neutral-800 rounded-xl shadow hover:shadow-lg cursor-pointer"
             whileHover={{ scale: 1.02 }}
             onClick={() => setActiveJob(job)}
           >
             <h3 className="text-xl font-semibold">{job.title}</h3>
-            <p className="text-neutral-500">{job.company}</p>
+            <p className="text-neutral-500">{job.location}</p>
             <p className="text-sm text-neutral-600 line-clamp-2 mt-1">
-              {job.description}
+              {job._description}
             </p>
           </motion.div>
         ))}
