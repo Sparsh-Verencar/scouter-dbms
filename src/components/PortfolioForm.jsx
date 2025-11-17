@@ -15,11 +15,12 @@ export default function PortfolioForm({ onCreated }) {
         body: JSON.stringify({ title, description }),
       });
 
-
       const data = await res.json().catch(() => null);
 
       if (res.ok) {
         onCreated();
+        setTitle("");
+        setDescription("");
       } else {
         console.log("Error creating portfolio", data);
       }
@@ -31,29 +32,32 @@ export default function PortfolioForm({ onCreated }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-[400px] p-6 bg-white shadow rounded-xl space-y-4"
+      className="w-full max-w-md p-6 bg-white dark:bg-gray-800 shadow-lg rounded-2xl space-y-4 transition-colors duration-300"
     >
-      <h2 className="text-xl font-semibold">Create Your Portfolio</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+        Create Your Portfolio
+      </h2>
 
       <input
-        className="w-full p-2 border rounded"
+        type="text"
+        className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
         placeholder="Your role/title"
         value={title}
-        onChange={(e) => {
-          setTitle(e.target.value);
-        }}
+        onChange={(e) => setTitle(e.target.value)}
       />
 
       <textarea
-        className="w-full p-2 border rounded"
+        className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
         placeholder="Describe yourself..."
         value={description}
-        onChange={(e) => {
-          setDescription(e.target.value);
-        }}
+        onChange={(e) => setDescription(e.target.value)}
+        rows={4}
       />
 
-      <button className="w-full bg-black text-white py-2 rounded">
+      <button
+        type="submit"
+        className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+      >
         Save Portfolio
       </button>
     </form>
