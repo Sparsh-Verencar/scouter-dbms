@@ -10,7 +10,7 @@ import {
   SquareTerminal,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-
+import { useRecruiter } from "@/hooks/useRecruiter";
 import { NavMain } from "@/components/nav-main"
 import {
   Sidebar,
@@ -67,7 +67,9 @@ const data = {
 export function RecruiterAppSidebar({
   ...props
 }) {
+
   const router = useRouter()
+  const { user, loading } = useRecruiter();
 const handlerecruiterLogout = async () => {
   try {
     console.log("logout clicked")
@@ -87,12 +89,18 @@ const handlerecruiterLogout = async () => {
         <SidebarMenuButton
           size="lg"
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-          <div
-            className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-          </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-medium">Racnerev-recruiter</span>
-            <span className="truncate text-xs">free</span>
+            {loading ? (
+              <>
+                <span className="truncate font-medium">Loading...</span>
+                <span className="truncate text-xs"></span>
+              </>
+            ) : (
+              <>
+                <span className="truncate font-medium">{user?.full_name}</span>
+                <span className="truncate text-xs">{user?.email}</span>
+              </>
+            )}
           </div>
           <ChevronsUpDown className="ml-auto" />
         </SidebarMenuButton>
