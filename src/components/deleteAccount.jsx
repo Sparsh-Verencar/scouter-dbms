@@ -14,7 +14,7 @@ import { AlertTriangleIcon, DoorClosedIcon } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation"
 
-export default function DeleteAccount() {
+export default function FreelancerDeleteAccount() {
   const router = useRouter()
 
   const [open, setOpen] = useState(false);

@@ -14,20 +14,20 @@ import { AlertTriangleIcon, DoorClosedIcon } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation"
 
-export default function FreelancerLogout() {
+export default function RecruiterLogout() {
   const router = useRouter()
 
   const [open, setOpen] = useState(false);
-const handleFreelancerLogout = async () => {
+const handleRecruiterLogout = async () => {
     try {
       console.log("logout clicked")
-      await fetch("http://localhost:3001/api/auth/freelancer-logout", {
+      await fetch("http://localhost:3001/api/auth/recruiter-logout", {
         method: "POST",
         credentials: "include", // VERY IMPORTANT — includes your auth cookie
       });
       // redirect to login page
       setOpen(true)
-      router.push("/freelancer-login");
+      router.push("/recruiter-login");
     } catch (err) {
       console.log("Logout error:", err);
     }
@@ -58,7 +58,7 @@ const handleFreelancerLogout = async () => {
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button variant="destructive" onClick={handleFreelancerLogout}>
+          <Button variant="destructive" onClick={handleRecruiterLogout}>
             Logout
           </Button>
         </DialogFooter>

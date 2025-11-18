@@ -14,31 +14,32 @@ import { AlertTriangleIcon, DoorClosedIcon } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation"
 
-export default function FreelancerLogout() {
+export default function RecruiterDeleteAccount() {
   const router = useRouter()
 
   const [open, setOpen] = useState(false);
-const handleFreelancerLogout = async () => {
-    try {
-      console.log("logout clicked")
-      await fetch("http://localhost:3001/api/auth/freelancer-logout", {
-        method: "POST",
-        credentials: "include", // VERY IMPORTANT — includes your auth cookie
-      });
-      // redirect to login page
-      setOpen(true)
-      router.push("/freelancer-login");
-    } catch (err) {
-      console.log("Logout error:", err);
+async function deleteAccount() {
+    const res = await fetch("http://localhost:3001/api/auth/recruiter-delete", {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    console.log(data);
+    setOpen(true)
+    if (res.ok) {
+      alert("Account deleted");
+      router.push("/"); // redirect
+    } else {
+      alert(data.error || "Error deleting account");
     }
   }
-  
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div className="flex">
           <DoorClosedIcon />
-          Logout
+          Delete Account
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
@@ -48,9 +49,10 @@ const handleFreelancerLogout = async () => {
             <AlertTriangleIcon className="h-6 w-6 text-red-600" />
           </div>
           <DialogHeader>
-            <DialogTitle>Logout account</DialogTitle>
+            <DialogTitle>Deactivate account</DialogTitle>
             <DialogDescription>
-              Are you sure you want to logout from your account? 
+              Are you sure you want to deactivate your account? All of your data
+              will be permanently removed. This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
         </div>
@@ -58,8 +60,8 @@ const handleFreelancerLogout = async () => {
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button variant="destructive" onClick={handleFreelancerLogout}>
-            Logout
+          <Button variant="destructive" onClick={deleteAccount}>
+            Deactivate
           </Button>
         </DialogFooter>
       </DialogContent>

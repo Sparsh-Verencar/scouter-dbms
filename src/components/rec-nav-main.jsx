@@ -17,10 +17,10 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
-import FreelancerLogout from "./logout";
-import FreelancerDeleteAccount from "./deleteAccount";
+import RecruiterLogout from "./recruiterLogout";
+import RecruiterDeleteAccount from "./recruiterDeleteAccount";
 
-export function NavMain({
+export function RecNavMain({
   items
 }) {
   return (
@@ -76,10 +76,10 @@ export function NavMain({
               <SidebarMenuSub>
                 <SidebarMenuItem>
                   <SidebarMenuButton>
-                    <FreelancerLogout />
+                    <RecruiterLogout />
                   </SidebarMenuButton>
                   <SidebarMenuButton>
-                    <FreelancerDeleteAccount />
+                    <RecruiterDeleteAccount />
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarMenuSub>
