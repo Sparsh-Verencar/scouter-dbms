@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function JobList() {
   const [jobs, setJobs] = useState([]);
   const [activeJob, setActiveJob] = useState(null);
+ 
 
   // ⬇️ Move this function outside useEffect so it can be reused
   async function fetchJobs() {
@@ -68,14 +69,14 @@ export default function JobList() {
         )}
       </AnimatePresence>
 
-      {/* Expanded Job Card */}
+      {/* Modal */}
       <AnimatePresence>
         {activeJob && (
           <motion.div
             className="fixed inset-0 flex items-center justify-center z-50 p-4"
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
+            exit={{ scale: 0.8, opacity: 0 }}
           >
             <div className="bg-white dark:bg-neutral-900 rounded-2xl max-w-lg w-full p-6 shadow-xl">
               <h2 className="text-2xl font-bold mb-2">{activeJob.title}</h2>
@@ -113,8 +114,8 @@ export default function JobList() {
           <motion.div
             key={job.job_id}
             className="p-4 bg-white dark:bg-neutral-800 rounded-xl shadow hover:shadow-lg cursor-pointer"
-            whileHover={{ scale: 1.02 }}
             onClick={() => setActiveJob(job)}
+            whileHover={{ scale: 1.02 }}
           >
             <h3 className="text-xl font-semibold">{job.title}</h3>
             <p className="text-neutral-500">{job.location}</p>
