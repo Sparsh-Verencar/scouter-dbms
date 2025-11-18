@@ -27,7 +27,7 @@ const handleRecruiterLogout = async () => {
       });
       // redirect to login page
       setOpen(true)
-      router.push("/recruiter-login");
+      router.push("/");
     } catch (err) {
       console.log("Logout error:", err);
     }

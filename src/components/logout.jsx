@@ -27,7 +27,7 @@ const handleFreelancerLogout = async () => {
       });
       // redirect to login page
       setOpen(true)
-      router.push("/freelancer-login");
+      router.push("/");
     } catch (err) {
       console.log("Logout error:", err);
     }
