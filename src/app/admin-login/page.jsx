@@ -13,18 +13,32 @@ export default function LoginPage() {
   const [pwd, setPwd] = useState("");
   const [error, setError] = useState("");
 
-  // master admin password
-  const ADMIN_PASSWORD = "mast420"; 
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
-    if (pwd === ADMIN_PASSWORD) {
+    try {
+      const res = await fetch("http://localhost:3001/api/auth/admin-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // important!
+        body: JSON.stringify({ password: pwd }),
+      });
+
+      const data = await res.json();
+
+      if (!data.ok) {
+        setError(data.error || "Incorrect password.");
+        return;
+      }
+
+      // store admin flag (frontend check)
       localStorage.setItem("isAdmin", "true");
 
       router.push("/admin");
-    } else {
-      setError("Incorrect password. Try again.");
+    } catch (err) {
+      console.error("Admin login failed", err);
+      setError("Something went wrong. Try again.");
     }
   };
 
@@ -47,19 +61,14 @@ export default function LoginPage() {
           <hr className="my-4 border-dashed" />
 
           <div className="space-y-6">
-            <div className="space-y-0.5">
-              <div className="flex items-center justify-between">
-                
-              </div>
-              <Input
-                type="password"
-                required
-                id="pwd"
-                value={pwd}
-                onChange={(e) => setPwd(e.target.value)}
-                className="input sz-md variant-mixed"
-              />
-            </div>
+            <Input
+              type="password"
+              required
+              id="pwd"
+              value={pwd}
+              onChange={(e) => setPwd(e.target.value)}
+              className="input sz-md variant-mixed"
+            />
 
             {error && (
               <p className="text-red-500 text-sm text-center">{error}</p>
