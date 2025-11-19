@@ -50,11 +50,12 @@ export default function RecruiterCompletedJobs() {
         >
           <h3 className="text-xl font-semibold">{job.title}</h3>
           <p className="text-neutral-500">{job.location}</p>
+          <p className="text-neutral-500">{job.salary}</p>
           <p className="text-sm text-neutral-600 line-clamp-2 mt-1">
             {job._description}
           </p>
           <p className="mt-2 text-green-600 font-semibold">
-            Completed at: {new Date(job.completed_at).toLocaleString()}
+            Completed
           </p>
         </motion.div>
       ))}
@@ -81,6 +82,9 @@ export default function RecruiterCompletedJobs() {
                 <p className="text-neutral-500 mb-2">{activeJob.location}</p>
                 <p className="text-neutral-700 dark:text-neutral-300">
                   {activeJob._description}
+                </p>
+                <p className="mt-2 text-green-600 font-semibold">
+                  Completed by: {activeJob.full_name}
                 </p>
                 <p className="mt-2 text-green-600 font-semibold">
                   Completed at: {new Date(activeJob.completed_at).toLocaleString()}
