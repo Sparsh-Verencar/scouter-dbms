@@ -51,11 +51,11 @@ const data = {
         },
         {
           title: "Current Jobs",
-          url: "/recruiter-dashboard/jobs/current-jobs",
+          url: "/recruiter-dashboard/jobs/ongoing-jobs",
         },
         {
           title: "Finished Jobs",
-          url: "/recruiter-dashboard/jobs/finished-jobs",
+          url: "/recruiter-dashboard/jobs/completed-jobs",
         },
       ],
     },
