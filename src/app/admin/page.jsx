@@ -34,7 +34,7 @@ export default function JobHistoryAdmin() {
   const fetchHistory = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API}/api/jobs/history?limit=500`);
+      const res = await fetch(`http://localhost:3001/api/jobs/history?limit=500`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       if (!json.ok) throw new Error(json.error || "Invalid response");
