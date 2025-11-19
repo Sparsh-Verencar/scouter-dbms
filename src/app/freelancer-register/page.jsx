@@ -10,48 +10,48 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState('');
 
   async function handleSubmit(e) {
-  e.preventDefault();
-  setErr('');
-  setSuccess('');
-  setLoading(true);
+    e.preventDefault();
+    setErr('');
+    setSuccess('');
+    setLoading(true);
 
-  // Get form data
-  const fd = new FormData(e.currentTarget);
-  const email = (fd.get('email')?.toString() || '').trim();
-  const name = (fd.get('name')?.toString() || '').trim();
-  const password = (fd.get('password')?.toString() || '').trim();
-  const phone = (fd.get('phone')?.toString() || '').trim();
-  const experience = parseInt(fd.get('experience')?.toString() || '0', 10);
-  const category = (fd.get('category')?.toString() || '').trim();
+    // Get form data
+    const fd = new FormData(e.currentTarget);
+    const email = (fd.get('email')?.toString() || '').trim();
+    const name = (fd.get('name')?.toString() || '').trim();
+    const password = (fd.get('password')?.toString() || '').trim();
+    const phone = (fd.get('phone')?.toString() || '').trim();
+    const experience = parseInt(fd.get('experience')?.toString() || '0', 10);
+    const category = (fd.get('category')?.toString() || '').trim();
 
-  // Basic validation
-  if (!email || !password || !name || !phone || !category) {
-    setErr('Please fill in all required fields.');
-    setLoading(false);
-    return;
-  }
-
-  try {
-    const res = await fetch('http://localhost:3001/api/auth/freelancer-register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, name, phone, experience, category }),
-    });
-
-    const data = await res.json().catch(() => ({}));
-
-    if (!res.ok) {
-      throw new Error(data?.error || 'Registration failed');
+    // Basic validation
+    if (!email || !password || !name || !phone || !category) {
+      setErr('Please fill in all required fields.');
+      setLoading(false);
+      return;
     }
 
-    setSuccess('Account created. Redirecting to login...');
-    setLoading(false); // stop loading before redirect
-    setTimeout(() => router.push('/freelancer-login'), 900);
-  } catch (e) {
-    setErr(e.message || 'Registration failed');
-    setLoading(false);
+    try {
+      const res = await fetch('http://localhost:3001/api/auth/freelancer-register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, name, phone, experience, category }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(data?.error || 'Registration failed');
+      }
+
+      setSuccess('Account created. Redirecting to login...');
+      setLoading(false); // stop loading before redirect
+      setTimeout(() => router.push('/freelancer-login'), 900);
+    } catch (e) {
+      setErr(e.message || 'Registration failed');
+      setLoading(false);
+    }
   }
-}
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -94,6 +94,7 @@ export default function RegisterPage() {
           name="phone"
           type="tel"
           placeholder="123-456-7890"
+          pattern="^[0-9]{10}$"
           required
           className="w-full mb-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
         />
@@ -105,11 +106,12 @@ export default function RegisterPage() {
           type="number"
           placeholder="0"
           min={0}
+          max={99}
           required
           className="w-full mb-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
-          />
+        />
 
-        
+
         <label htmlFor="category" className="block text-sm mb-1">Category</label>
         <input
           id="category"
@@ -117,7 +119,7 @@ export default function RegisterPage() {
           placeholder="Your category"
           required
           className="w-full mb-4 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
-          />
+        />
         {err && <div className="text-sm text-red-500 mb-3">{err}</div>}
         {success && <div className="text-sm text-green-600 mb-3">{success}</div>}
 
