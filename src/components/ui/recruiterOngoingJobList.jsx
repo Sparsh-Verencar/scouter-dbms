@@ -48,6 +48,7 @@ export default function RecruiterOngoingJobs() {
       >
         <h3 className="text-xl font-semibold">{job.title}</h3>
         <p className="text-neutral-500">{job.location}</p>
+        <p className="text-neutral-500">{job.salary}</p>
         <p className="text-sm text-neutral-600 line-clamp-2 mt-1">
           {job._description}
         </p>
@@ -57,9 +58,9 @@ export default function RecruiterOngoingJobs() {
             e.stopPropagation();
             setActiveJob(job);
           }}
-          className="mt-3 py-2 px-4 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition"
+          className="mt-3 py-2 px-4 rounded-lg bg-orange-300 text-white font-semibold hover:bg-green-700 transition"
         >
-          More
+          ongoing
         </button>
       </motion.div>
     ))}
@@ -86,6 +87,12 @@ export default function RecruiterOngoingJobs() {
               <p className="text-neutral-500 mb-2">{activeJob.location}</p>
               <p className="text-neutral-700 dark:text-neutral-300 mb-4">
                 {activeJob._description}
+              </p>
+              <p className="text-neutral-700 dark:text-neutral-300 mb-4">
+                {activeJob.salary}
+              </p>
+              <p className="text-neutral-700 dark:text-neutral-300 mb-4">
+                {activeJob.full_name}
               </p>
               <button
                 onClick={() => setActiveJob(null)}

@@ -89,6 +89,9 @@ export default function RecruiterCompletedJobs() {
                 <p className="mt-2 text-green-600 font-semibold">
                   Completed at: {new Date(activeJob.completed_at).toLocaleString()}
                 </p>
+                <p className="mt-2 text-green-600 font-semibold">
+                  Submission Link: {activeJob.submission_link}
+                </p>
                 <button
                   onClick={() => setActiveJob(null)}
                   className="mt-3 w-full py-2 rounded-lg bg-neutral-900 text-white dark:bg-neutral-700"
