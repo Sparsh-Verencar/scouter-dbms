@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { PlusCircle, Loader2, CheckCircle } from "lucide-react";
+import { useRecruiter } from "@/hooks/useRecruiter";
 
 const RecruiterProfilePage = () => {
-  const [loading, setLoading] = useState(true);
-
+    const { user, loading } = useRecruiter();
+  
   // Temporary job statistics
   const jobStats = {
     created: 317,
@@ -13,27 +14,21 @@ const RecruiterProfilePage = () => {
     completed: 228,
   };
 
-  // Recruiter info (static)
-  const recruiter = {
-    full_name: "John Anderson",
-    company_name: "TechNova Solutions",
-    email: "john.anderson@technova.com",
-    phone: "+1 555-239-8844",
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, []);
-
   if (loading) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
-        Loading Recruiter Profile...
+        Loading...
       </div>
     );
   }
 
+  if (!user) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        Not logged in.
+      </div>
+    );
+  }
   // Job cards data
   const jobCards = [
     {
@@ -123,21 +118,21 @@ const RecruiterProfilePage = () => {
 
           {/* Name */}
           <h1 className="text-3xl font-extrabold mt-6 tracking-wide">
-            {recruiter.full_name}
+            {user.full_name}
           </h1>
 
           {/* Company */}
           <p className="text-gray-600 dark:text-gray-300 text-lg mt-1">
-            {recruiter.company_name}
+            {user.company_name}
           </p>
 
           {/* Contact Info */}
           <div className="mt-8 space-y-4 text-left w-full text-lg">
             <p className="flex justify-between">
-              <strong>Email:</strong> <span>{recruiter.email}</span>
+              <strong>Email:</strong> <span>{user.email}</span>
             </p>
             <p className="flex justify-between">
-              <strong>Phone:</strong> <span>{recruiter.phone}</span>
+              <strong>Phone:</strong> <span>{user.phone}</span>
             </p>
           </div>
 

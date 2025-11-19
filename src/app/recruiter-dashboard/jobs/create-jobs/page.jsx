@@ -1,14 +1,34 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function CreateJobsPage() {
   const [form, setForm] = useState({
     title: "",
-    description: "",
+    _description: "",
     salary: "",
     location: "",
     category: "",
   });
+
+  const [jobs, setJobs] = useState([]);
+
+  // Fetch recruiter-created jobs
+  async function fetchJobs() {
+    try {
+      const res = await fetch("http://localhost:3001/api/jobs/getRecruiterJobs", {
+        credentials: "include",
+      });
+
+      const data = await res.json();
+     setJobs(data);
+    } catch (err) {
+      console.error("Error fetching jobs:", err);
+    }
+  }
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -18,14 +38,25 @@ export default function CreateJobsPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch("/api/jobs/create", {
+      const res = await fetch("http://localhost:3001/api/jobs/recCreateJobs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(form),
       });
 
       const data = await res.json();
-      alert(data.message);
+      alert(data.message || "Job created!");
+
+      setForm({
+        title: "",
+        _description: "",
+        salary: "",
+        location: "",
+        category: "",
+      });
+
+      await fetchJobs();
     } catch (err) {
       console.error(err);
       alert("Error creating job");
@@ -33,7 +64,9 @@ export default function CreateJobsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-start justify-center p-6 gap-10">
+
+      {/* FORM SIDE */}
       <div className="w-full max-w-lg bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8">
         <h1 className="text-4xl font-extrabold mb-8 text-gray-900 dark:text-gray-100 text-center">
           Create Job
@@ -43,17 +76,12 @@ export default function CreateJobsPage() {
 
           {/* Job Title */}
           <div>
-            <label
-              htmlFor="title"
-              className="block mb-2 font-semibold text-gray-800 dark:text-gray-300"
-            >
-              Job Title
-            </label>
+            <label className="block mb-2 font-semibold">Job Title</label>
             <input
-              id="title"
               name="title"
+              value={form.title}
               placeholder="Enter job title"
-              className="w-full p-3 border border-gray-300 rounded-xl bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-sm"
+              className="w-full p-3 border rounded-xl bg-gray-50 dark:bg-gray-900"
               onChange={handleChange}
               required
             />
@@ -61,18 +89,13 @@ export default function CreateJobsPage() {
 
           {/* Job Description */}
           <div>
-            <label
-              htmlFor="description"
-              className="block mb-2 font-semibold text-gray-800 dark:text-gray-300"
-            >
-              Job Description
-            </label>
+            <label className="block mb-2 font-semibold">Job Description</label>
             <textarea
-              id="description"
-              name="description"
-              placeholder="Enter detailed job description"
+              name="_description"
+              value={form._description}
+              placeholder="Enter job description"
               rows={5}
-              className="w-full p-3 border border-gray-300 rounded-xl bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-sm"
+              className="w-full p-3 border rounded-xl bg-gray-50 dark:bg-gray-900 resize-none"
               onChange={handleChange}
               required
             />
@@ -80,64 +103,72 @@ export default function CreateJobsPage() {
 
           {/* Salary */}
           <div>
-            <label
-              htmlFor="salary"
-              className="block mb-2 font-semibold text-gray-800 dark:text-gray-300"
-            >
-              Salary
-            </label>
+            <label className="block mb-2 font-semibold">Salary</label>
             <input
-              id="salary"
               name="salary"
-              placeholder="e.g. $60,000 - $80,000"
-              className="w-full p-3 border border-gray-300 rounded-xl bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-sm"
+              value={form.salary}
+              placeholder="50000"
+              className="w-full p-3 border rounded-xl bg-gray-50 dark:bg-gray-900"
               onChange={handleChange}
             />
           </div>
 
           {/* Location */}
           <div>
-            <label
-              htmlFor="location"
-              className="block mb-2 font-semibold text-gray-800 dark:text-gray-300"
-            >
-              Location
-            </label>
+            <label className="block mb-2 font-semibold">Location</label>
             <input
-              id="location"
               name="location"
-              placeholder="City, State, or Remote"
-              className="w-full p-3 border border-gray-300 rounded-xl bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-sm"
+              value={form.location}
+              placeholder="City, State or Remote"
+              className="w-full p-3 border rounded-xl bg-gray-50 dark:bg-gray-900"
               onChange={handleChange}
             />
           </div>
 
           {/* Category */}
           <div>
-            <label
-              htmlFor="category"
-              className="block mb-2 font-semibold text-gray-800 dark:text-gray-300"
-            >
-              Category
-            </label>
+            <label className="block mb-2 font-semibold">Category</label>
             <input
-              id="category"
               name="category"
-              placeholder="e.g. Engineering, Marketing"
-              className="w-full p-3 border border-gray-300 rounded-xl bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition shadow-sm"
+              value={form.category}
+              placeholder="Engineering, Marketing, etc"
+              className="w-full p-3 border rounded-xl bg-gray-50 dark:bg-gray-900"
               onChange={handleChange}
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg transition duration-300"
+            className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg transition"
           >
             Create Job
           </button>
         </form>
       </div>
+
+      {/* JOB LIST SIDE */}
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 overflow-y-auto max-h-[90vh]">
+        <h2 className="text-3xl font-bold mb-4">Your Created Jobs</h2>
+
+        {jobs.length === 0 ? (
+          <p className="text-gray-500">You haven't created any jobs yet.</p>
+        ) : (
+          <div className="space-y-4">
+            {jobs.map((job) => (
+              <div key={job.job_id} className="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl shadow border">
+                <h3 className="text-xl font-semibold">{job.title}</h3>
+                <p className="text-gray-500">{job.location}</p>
+                <p className="text-gray-700 dark:text-gray-300 mt-2 line-clamp-2">
+                  {job._description}
+                </p>
+                <p className="text-sm text-gray-400 mt-1">Category: {job.category}</p>
+                <p className="text-sm text-gray-400">Salary: {job.salary}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
     </div>
   );
 }

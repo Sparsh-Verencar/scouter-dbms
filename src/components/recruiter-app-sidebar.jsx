@@ -11,7 +11,7 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useRecruiter } from "@/hooks/useRecruiter";
-import { NavMain } from "@/components/nav-main"
+import { RecNavMain } from "@/components/rec-nav-main"
 import {
   Sidebar,
   SidebarContent,
@@ -106,7 +106,7 @@ const handlerecruiterLogout = async () => {
         </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <RecNavMain items={data.navMain} />
         <SidebarMenuItem>
           <SidebarMenuButton onClick={handlerecruiterLogout}>
           </SidebarMenuButton>
