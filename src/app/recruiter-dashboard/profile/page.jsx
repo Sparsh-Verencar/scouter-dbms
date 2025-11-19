@@ -59,40 +59,6 @@ const RecruiterProfilePage = () => {
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center gap-10 p-8">
-      {/* 🔥 STATUS CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-5xl">
-        {jobCards.map((item, index) => (
-          <div
-            key={index}
-            className={`
-              p-6 rounded-3xl shadow-xl
-              bg-gradient-to-br ${item.lightColor} dark:${item.darkColor}
-              text-white backdrop-blur-xl
-              transition-all duration-300
-              hover:-translate-y-2 hover:shadow-2xl hover:brightness-110
-              min-h-[190px]
-              flex flex-col justify-between
-            `}
-          >
-            {/* Title + Icon */}
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-lg">{item.title}</h3>
-              <div className="opacity-90">{item.icon}</div>
-            </div>
-
-            {/* Number */}
-            <p className="text-5xl font-extrabold mt-3">{item.value}</p>
-
-            {/* View link */}
-            <button
-              onClick={() => (window.location.href = item.link)}
-              className="text-sm font-semibold underline underline-offset-4 mt-4 self-end hover:opacity-80"
-            >
-              View →
-            </button>
-          </div>
-        ))}
-      </div>
 
       {/* 🔽 PROFILE CARD */}
       <div
@@ -135,22 +101,6 @@ const RecruiterProfilePage = () => {
               <strong>Phone:</strong> <span>{user.phone}</span>
             </p>
           </div>
-
-          {/* Edit Button */}
-          <button
-            onClick={() =>
-              (window.location.href = "/recruiter-dashboard/profile/edit")
-            }
-            className="
-              mt-8 px-6 py-3 text-sm font-semibold rounded-xl
-              bg-gradient-to-r from-purple-500 to-purple-700
-              text-white shadow-lg
-              transition-all duration-300
-              hover:brightness-110 hover:shadow-purple-500/40
-            "
-          >
-            Edit Profile
-          </button>
         </div>
       </div>
     </div>

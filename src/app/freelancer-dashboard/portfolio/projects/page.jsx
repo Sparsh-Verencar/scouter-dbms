@@ -219,7 +219,7 @@ const ProjectPage = () => {
   const fetchProjects = async () => {
     try {
       const res = await fetch(
-        "http://localhost:3001/api/projects/getProjects  ",
+        "http://localhost:3001/api/projects/getProjects",
         {
           credentials: "include",
         }
