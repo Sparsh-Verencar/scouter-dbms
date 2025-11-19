@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 export default function CreateJobsPage() {
   const [form, setForm] = useState({
@@ -11,6 +11,7 @@ export default function CreateJobsPage() {
   });
 
   const [jobs, setJobs] = useState([]);
+  const [search, setSearch] = useState(""); // 🔍 Search state
 
   // Fetch recruiter-created jobs
   async function fetchJobs() {
@@ -20,7 +21,7 @@ export default function CreateJobsPage() {
       });
 
       const data = await res.json();
-     setJobs(data);
+      setJobs(data);
     } catch (err) {
       console.error("Error fetching jobs:", err);
     }
@@ -62,6 +63,20 @@ export default function CreateJobsPage() {
       alert("Error creating job");
     }
   };
+
+  // 🔍 Filter jobs based on search
+  const filteredJobs = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return jobs;
+
+    return jobs.filter((j) =>
+      j.title.toLowerCase().includes(q) ||
+      j.location.toLowerCase().includes(q) ||
+      j.category.toLowerCase().includes(q) ||
+      j._description.toLowerCase().includes(q) ||
+      String(j.salary).includes(q)
+    );
+  }, [search, jobs]);
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-start justify-center p-6 gap-10">
@@ -150,11 +165,20 @@ export default function CreateJobsPage() {
       <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 overflow-y-auto max-h-[90vh]">
         <h2 className="text-3xl font-bold mb-4">Your Created Jobs</h2>
 
-        {jobs.length === 0 ? (
-          <p className="text-gray-500">You haven't created any jobs yet.</p>
+        {/* 🔍 Search Bar */}
+        <input
+          type="search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search created jobs..."
+          className="w-full mb-4 p-3 rounded-xl border bg-gray-50 dark:bg-gray-900"
+        />
+
+        {filteredJobs.length === 0 ? (
+          <p className="text-gray-500">No matching jobs found.</p>
         ) : (
           <div className="space-y-4">
-            {jobs.map((job) => (
+            {filteredJobs.map((job) => (
               <div key={job.job_id} className="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl shadow border">
                 <h3 className="text-xl font-semibold">{job.title}</h3>
                 <p className="text-gray-500">{job.location}</p>

@@ -1,137 +1,6 @@
-// "use client";
-
-// import { useEffect, useState } from "react";
-// import { motion, AnimatePresence } from "framer-motion";
-
-// export default function JobList() {
-//   const [jobs, setJobs] = useState([]);
-//   const [activeJob, setActiveJob] = useState(null);
- 
-
-//   // ⬇️ Move this function outside useEffect so it can be reused
-//   async function fetchJobs() {
-//     try {
-//       const res = await fetch("http://localhost:3001/api/jobs/getFreeJobs");
-//       const data = await res.json();
-//       setJobs(data);
-//     } catch (err) {
-//       console.error("Error fetching jobs:", err);
-//     }
-//   }
-
-//   // Fetch on page load
-//   useEffect(() => {
-//     fetchJobs();
-//   }, []);
-
-//   // Apply handler
-//   async function applyToJob(jobId) {
-//     try {
-//       const res = await fetch("http://localhost:3001/api/jobs/apply", {
-//         method: "POST",
-//         credentials: "include",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ job_id: jobId }),
-//       });
-
-//       const data = await res.json();
-
-//       if (!res.ok) {
-//         alert(data.error || "Application failed");
-//         return;
-//       }
-
-//       alert("Application submitted!");
-//       setActiveJob(null); // close modal
-
-//       // ⬇️ NOW refresh the job list
-//       await fetchJobs();
-//     } catch (err) {
-//       console.error("Apply error:", err);
-//       alert("Something went wrong");
-//     }
-//   }
-
-//   return (
-//     <>
-//       {/* Overlay */}
-//       <AnimatePresence>
-//         {activeJob && (
-//           <motion.div
-//             className="fixed inset-0 bg-black/40 z-40"
-//             initial={{ opacity: 0 }}
-//             animate={{ opacity: 1 }}
-//             exit={{ opacity: 0 }}
-//             onClick={() => setActiveJob(null)}
-//           />
-//         )}
-//       </AnimatePresence>
-
-//       {/* Modal */}
-//       <AnimatePresence>
-//         {activeJob && (
-//           <motion.div
-//             className="fixed inset-0 flex items-center justify-center z-50 p-4"
-//             initial={{ scale: 0.8, opacity: 0 }}
-//             animate={{ scale: 1, opacity: 1 }}
-//             exit={{ scale: 0.8, opacity: 0 }}
-//           >
-//             <div className="bg-white dark:bg-neutral-900 rounded-2xl max-w-lg w-full p-6 shadow-xl">
-//               <h2 className="text-2xl font-bold mb-2">{activeJob.title}</h2>
-//               <p className="text-neutral-500 mb-2">{activeJob.location}</p>
-
-//               <p className="text-neutral-700 dark:text-neutral-300">
-//                 {activeJob._description}
-//               </p>
-
-//               <button
-//                 onClick={() => applyToJob(activeJob.job_id)}
-//                 className="mt-6 w-full py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
-//               >
-//                 Apply Now
-//               </button>
-
-//               <button
-//                 onClick={() => setActiveJob(null)}
-//                 className="mt-3 w-full py-2 rounded-lg bg-neutral-900 text-white dark:bg-neutral-700"
-//               >
-//                 Close
-//               </button>
-//             </div>
-//           </motion.div>
-//         )}
-//       </AnimatePresence>
-
-//       {/* Job List */}
-//       <div className="max-w-2xl mx-auto mt-8 space-y-4">
-//         {jobs.length === 0 && (
-//           <p className="text-center text-neutral-500">No open positions.</p>
-//         )}
-
-//         {jobs.map((job) => (
-//           <motion.div
-//             key={job.job_id}
-//             className="p-4 bg-white dark:bg-neutral-800 rounded-xl shadow hover:shadow-lg cursor-pointer"
-//             onClick={() => setActiveJob(job)}
-//             whileHover={{ scale: 1.02 }}
-//           >
-//             <h3 className="text-xl font-semibold">{job.title}</h3>
-//             <p className="text-neutral-500">{job.location}</p>
-//             <p className="text-sm text-neutral-600 line-clamp-2 mt-1">
-//               {job._description}
-//             </p>
-//           </motion.div>
-//         ))}
-//       </div>
-//     </>
-//   );
-// }
-
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 /* ---------------------------------------------
@@ -175,6 +44,7 @@ const headerBar = `
 export default function JobList() {
   const [jobs, setJobs] = useState([]);
   const [activeJob, setActiveJob] = useState(null);
+  const [search, setSearch] = useState("");
 
   async function fetchJobs() {
     try {
@@ -215,9 +85,37 @@ export default function JobList() {
     }
   }
 
+  /* ---------------------------------------------
+     🔍 FILTER LOGIC
+  --------------------------------------------- */
+
+  const filteredJobs = useMemo(() => {
+    return jobs.filter((job) => {
+      const text = search.toLowerCase();
+      return (
+        job.title.toLowerCase().includes(text) ||
+        job.location.toLowerCase().includes(text) ||
+        job.category?.toLowerCase().includes(text) ||
+        job._description.toLowerCase().includes(text)
+      );
+    });
+  }, [search, jobs]);
+
   return (
     <div className={pageBg}>
       <div className={headerBar}>Available Jobs</div>
+
+      {/* SEARCH BAR */}
+      <div className="max-w-3xl mx-auto mb-8">
+        <input
+          className="w-full p-4 rounded-2xl bg-white dark:bg-gray-900 shadow-xl border 
+                     dark:border-gray-700 text-lg outline-none
+                     focus:ring-2 focus:ring-purple-400 transition"
+          placeholder="Search jobs by title, location, category..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
 
       {/* Overlay */}
       <AnimatePresence>
@@ -274,16 +172,18 @@ export default function JobList() {
 
       {/* Job List */}
       <div className="max-w-3xl mx-auto space-y-6">
-        {jobs.length === 0 ? (
-          <p className="text-center text-neutral-500 text-lg">
-            No open positions.
+        {filteredJobs.length === 0 ? (
+          <p className="text-center text-neutral-500 text-lg mt-10">
+            No jobs match your search.
           </p>
         ) : (
-          jobs.map((job) => (
+          filteredJobs.map((job) => (
             <motion.div
               key={job.job_id}
               onClick={() => setActiveJob(job)}
               whileHover={{ scale: 1.02 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               className={glowWrapper}
             >
               <div className={innerCardStyle}>
