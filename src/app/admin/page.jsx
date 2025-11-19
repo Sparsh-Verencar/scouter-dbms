@@ -13,13 +13,6 @@ import {
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
-/**
- * JobHistoryAdmin (improved layout)
- * - left summary column on wide screens
- * - top controls (search / filter / refresh)
- * - collapsible table rows with compact summary and expanded details
- * - top-3 diffs shown inline with "+N more"
- */
 export default function JobHistoryAdmin() {
   const [rows, setRows] = useState([]);
   const [summary, setSummary] = useState(null);
@@ -67,13 +60,35 @@ export default function JobHistoryAdmin() {
     }
   };
 
-  // Compute diffs (same logic as before) and store on each row for efficiency
+  // Compute diffs and build headline
   const rowsWithDiffs = useMemo(() => {
     return (rows || []).map((r) => {
       const oldRow = parseJSON(r.old_row);
       const newRow = parseJSON(r.new_row);
       const diffs = computeDiffs(oldRow, newRow);
-      return { ...r, _old: oldRow, _new: newRow, _diffs: diffs };
+
+      let headline = "";
+      const op = String(r.operation || "").toUpperCase();
+
+      if (op === "INSERT") {
+        const title = newRow?.title || `Job #${r.job_id}`;
+        const loc = newRow?.location || "";
+        headline = `Created job: ${title}${loc ? ` (${loc})` : ""}`;
+      } else if (op === "UPDATE") {
+        const first = diffs[0];
+        if (first) {
+          headline = `Updated ${formatKey(first.key)} → ${first.newVal || "—"}`;
+        } else {
+          headline = "Updated job details";
+        }
+      } else if (op === "DELETE") {
+        const title = oldRow?.title || `Job #${r.job_id}`;
+        headline = `Deleted job: ${title}`;
+      } else {
+        headline = "Job change";
+      }
+
+      return { ...r, _old: oldRow, _new: newRow, _diffs: diffs, _headline: headline };
     });
   }, [rows]);
 
@@ -81,9 +96,9 @@ export default function JobHistoryAdmin() {
   const filtered = useMemo(() => {
     const qLower = q.trim().toLowerCase();
     return rowsWithDiffs.filter((r) => {
-      if (opFilter !== "all" && String(r.operation).toLowerCase() !== opFilter.toLowerCase()) return false;
+      if (opFilter !== "all" && String(r.operation).toLowerCase() !== opFilter.toLowerCase())
+        return false;
       if (!qLower) return true;
-      // search across job_id, history_id, changed_by, and any diff key/values
       if (String(r.job_id).includes(qLower) || String(r.history_id).includes(qLower)) return true;
       if ((r.changed_by || "").toLowerCase().includes(qLower)) return true;
       for (const d of r._diffs || []) {
@@ -97,12 +112,11 @@ export default function JobHistoryAdmin() {
 
   // unique operations for filter dropdown
   const ops = useMemo(() => {
-    const set = new Set(rows.map(r => r.operation).filter(Boolean));
+    const set = new Set(rows.map((r) => r.operation).filter(Boolean));
     return ["all", ...Array.from(set)];
   }, [rows]);
 
   return (
-    
     <div className="w-full max-w-7xl mx-auto mt-8 px-4">
       {/* Top header */}
       <div className="flex flex-col lg:flex-row gap-6">
@@ -122,8 +136,12 @@ export default function JobHistoryAdmin() {
           </div>
 
           <div className="mt-4 text-sm text-gray-400">
-            <div>Records shown: <strong>{filtered.length}</strong></div>
-            <div className="mt-1">Last refresh: <strong>{loading ? "…" : new Date().toLocaleTimeString()}</strong></div>
+            <div>
+              Records shown: <strong>{filtered.length}</strong>
+            </div>
+            <div className="mt-1">
+              Last refresh: <strong>{loading ? "…" : new Date().toLocaleTimeString()}</strong>
+            </div>
           </div>
         </div>
 
@@ -132,28 +150,27 @@ export default function JobHistoryAdmin() {
           {/* Controls */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
             <div className="flex items-center gap-2">
-              
               <select
                 value={opFilter}
                 onChange={(e) => setOpFilter(e.target.value)}
                 className="rounded-md px-3 py-2 border border-gray-700 bg-transparent text-sm"
               >
                 {ops.map((o) => (
-                  <option key={o} value={o}>{String(o).toUpperCase()}</option>
+                  <option key={o} value={o}>
+                    {String(o).toUpperCase()}
+                  </option>
                 ))}
               </select>
             </div>
 
             <div className="flex items-center gap-2">
               <div className="text-sm text-gray-400 mr-2">
-                {loading ? "Refreshing…" : `${rows.length} history rows (server)` }
+                {loading ? "Refreshing…" : `${rows.length} history rows (server)`}
               </div>
-              
             </div>
           </div>
 
           {/* Table */}
-          
           <div className="rounded-2xl bg-gradient-to-br from-[#0b0b0d] to-[#0f0f12] border border-gray-800 shadow-sm overflow-hidden">
             <Table className="min-w-full">
               <TableHeader className="sticky top-0 bg-transparent z-10">
@@ -182,7 +199,12 @@ export default function JobHistoryAdmin() {
                   const remaining = Math.max(0, diffs.length - shown.length);
 
                   return (
-                    <TableRow key={r.history_id} className={`${idx % 2 === 0 ? "bg-[#0f0f11]" : "bg-[#0b0b0d]"} hover:bg-[#141418]`}>
+                    <TableRow
+                      key={r.history_id}
+                      className={`${
+                        idx % 2 === 0 ? "bg-[#0f0f11]" : "bg-[#0b0b0d]"
+                      } hover:bg-[#141418]`}
+                    >
                       <TableCell className="py-3 align-top">
                         <div className="text-sm font-medium text-gray-200">{r.history_id}</div>
                         <div className="text-xs text-gray-500 mt-1">{r.changed_by || "—"}</div>
@@ -203,16 +225,32 @@ export default function JobHistoryAdmin() {
 
                       <TableCell className="align-top">
                         <div className="flex flex-col gap-2">
+                          {/* HEADLINE from trigger */}
+                          <div className="text-sm font-semibold text-gray-100">
+                            {r._headline}
+                          </div>
+
                           {/* inline compact diffs */}
                           {shown.length === 0 ? (
-                            <div className="text-sm text-gray-400 italic">No visible changes</div>
+                            <div className="text-sm text-gray-400 italic">
+                              No visible field-level changes
+                            </div>
                           ) : (
-                            shown.map(d => (
-                              <div key={d.key} className="flex items-center justify-between gap-3">
-                                <div className="text-sm text-gray-300 font-medium min-w-[140px]">{formatKey(d.key)}</div>
+                            shown.map((d) => (
+                              <div
+                                key={d.key}
+                                className="flex items-center justify-between gap-3"
+                              >
+                                <div className="text-sm text-gray-300 font-medium min-w-[140px]">
+                                  {formatKey(d.key)}
+                                </div>
                                 <div className="flex-1 text-sm text-gray-200 flex gap-3">
-                                  <div className="text-xs text-gray-400 w-1/2 truncate">{d.oldVal || "—"}</div>
-                                  <div className="text-xs text-green-300 w-1/2 text-right truncate">{d.newVal || "—"}</div>
+                                  <div className="text-xs text-gray-400 w-1/2 truncate">
+                                    {d.oldVal || "—"}
+                                  </div>
+                                  <div className="text-xs text-green-300 w-1/2 text-right truncate">
+                                    {d.newVal || "—"}
+                                  </div>
                                 </div>
                               </div>
                             ))
@@ -226,7 +264,12 @@ export default function JobHistoryAdmin() {
 
                             <div className="ml-auto">
                               <button
-                                onClick={() => setExpanded(prev => ({ ...prev, [r.history_id]: !prev[r.history_id] }))}
+                                onClick={() =>
+                                  setExpanded((prev) => ({
+                                    ...prev,
+                                    [r.history_id]: !prev[r.history_id],
+                                  }))
+                                }
                                 className="text-xs text-indigo-300 hover:underline"
                               >
                                 {isOpen ? "Hide" : "Details"}
@@ -238,19 +281,34 @@ export default function JobHistoryAdmin() {
                           {isOpen && (
                             <div className="mt-3 bg-black/30 border border-gray-800 rounded-lg p-3">
                               {diffs.length === 0 ? (
-                                <div className="text-sm text-gray-400 italic">No visible changes</div>
+                                <div className="text-sm text-gray-400 italic">
+                                  No visible changes
+                                </div>
                               ) : (
                                 <div className="space-y-2">
-                                  {diffs.map(d => (
-                                    <div key={d.key} className="p-2 border-b border-gray-800 last:border-b-0">
+                                  {diffs.map((d) => (
+                                    <div
+                                      key={d.key}
+                                      className="p-2 border-b border-gray-800 last:border-b-0"
+                                    >
                                       <div className="flex items-start justify-between gap-4">
-                                        <div className="min-w-[160px] text-sm text-gray-300 font-semibold">{formatKey(d.key)}</div>
+                                        <div className="min-w-[160px] text-sm text-gray-300 font-semibold">
+                                          {formatKey(d.key)}
+                                        </div>
                                         <div className="flex-1 text-sm text-gray-200">
                                           <div className="text-xs text-gray-400">OLD</div>
-                                          <div className="text-sm text-gray-200">{d.oldVal || <span className="italic text-gray-500">—</span>}</div>
+                                          <div className="text-sm text-gray-200">
+                                            {d.oldVal || (
+                                              <span className="italic text-gray-500">—</span>
+                                            )}
+                                          </div>
 
                                           <div className="text-xs text-gray-400 mt-2">NEW</div>
-                                          <div className="text-sm text-green-200">{d.newVal || <span className="italic text-gray-500">—</span>}</div>
+                                          <div className="text-sm text-green-200">
+                                            {d.newVal || (
+                                              <span className="italic text-gray-500">—</span>
+                                            )}
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
@@ -296,7 +354,11 @@ function SummaryCard({ label, value = 0, accent = "gray" }) {
     purple: "bg-purple-900 text-purple-300",
   };
   return (
-    <div className={`rounded-lg p-3 flex items-center justify-between ${accentMap[accent] || accentMap.gray} border border-gray-700`}>
+    <div
+      className={`rounded-lg p-3 flex items-center justify-between ${
+        accentMap[accent] || accentMap.gray
+      } border border-gray-700`}
+    >
       <div>
         <div className="text-xs text-gray-300">{label}</div>
         <div className="text-xl font-bold mt-1">{value ?? 0}</div>
@@ -310,16 +372,23 @@ function OpBadge({ op }) {
   const map = {
     UPDATE: "bg-yellow-800 text-yellow-300",
     INSERT: "bg-green-800 text-green-200",
-    DELETE: "bg-red-800 text-red-300"
+    DELETE: "bg-red-800 text-red-300",
   };
   const cls = map[opText] || "bg-slate-800 text-slate-300";
-  return <div className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${cls}`}>{opText || "?"}</div>;
+  return (
+    <div className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${cls}`}>
+      {opText || "?"}
+    </div>
+  );
 }
 
 /** Return array of diffs: [{ key, oldVal, newVal }] */
 function computeDiffs(oldRow, newRow) {
-  if ((oldRow === null || oldRow === undefined) && (newRow === null || newRow === undefined)) return [];
-  const isPrimitive = (v) => v === null || v === undefined || typeof v === "string" || typeof v === "number" || typeof v === "boolean";
+  if ((oldRow === null || oldRow === undefined) && (newRow === null || newRow === undefined))
+    return [];
+
+  const isPrimitive = (v) =>
+    v === null || v === undefined || typeof v === "string" || typeof v === "number" || typeof v === "boolean";
 
   if (isPrimitive(oldRow) || isPrimitive(newRow)) {
     const oldStr = normalizePrimitive(oldRow);
@@ -328,14 +397,16 @@ function computeDiffs(oldRow, newRow) {
     return [{ key: "value", oldVal: oldStr, newVal: newStr }];
   }
 
-  const keys = Array.from(new Set([...(Object.keys(oldRow || {})), ...(Object.keys(newRow || {}))]));
+  const keys = Array.from(
+    new Set([...(Object.keys(oldRow || {})), ...(Object.keys(newRow || {}))])
+  );
   const diffs = keys.reduce((acc, key) => {
     const a = oldRow ? oldRow[key] : undefined;
     const b = newRow ? newRow[key] : undefined;
-    const aStr = normalizePrimitive(a).toLowerCase ? normalizePrimitive(a) : String(a || "");
-    const bStr = normalizePrimitive(b).toLowerCase ? normalizePrimitive(b) : String(b || "");
+    const aStr = normalizePrimitive(a);
+    const bStr = normalizePrimitive(b);
     if (aStr !== bStr) {
-      acc.push({ key, oldVal: normalizePrimitive(a), newVal: normalizePrimitive(b) });
+      acc.push({ key, oldVal: aStr, newVal: bStr });
     }
     return acc;
   }, []);
@@ -354,7 +425,13 @@ function computeDiffs(oldRow, newRow) {
 function normalizePrimitive(v) {
   if (v === null || v === undefined) return "";
   if (typeof v === "object") {
-    try { return JSON.stringify(v); } catch { return String(v); }
+    // Flatten objects into plain text instead of JSON
+    try {
+      const parts = Object.entries(v).map(([k, val]) => `${k}: ${String(val)}`);
+      return parts.join("; ");
+    } catch {
+      return String(v);
+    }
   }
   return String(v);
 }

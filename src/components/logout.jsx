@@ -14,7 +14,7 @@ import { AlertTriangleIcon, DoorClosedIcon } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation"
 
-export default function Logout() {
+export default function FreelancerLogout() {
   const router = useRouter()
 
   const [open, setOpen] = useState(false);
@@ -27,7 +27,7 @@ const handleFreelancerLogout = async () => {
       });
       // redirect to login page
       setOpen(true)
-      router.push("/freelancer-login");
+      router.push("/");
     } catch (err) {
       console.log("Logout error:", err);
     }

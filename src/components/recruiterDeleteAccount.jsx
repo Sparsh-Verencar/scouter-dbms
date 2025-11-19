@@ -14,12 +14,12 @@ import { AlertTriangleIcon, DoorClosedIcon } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation"
 
-export default function FreelancerDeleteAccount() {
+export default function RecruiterDeleteAccount() {
   const router = useRouter()
 
   const [open, setOpen] = useState(false);
 async function deleteAccount() {
-    const res = await fetch("http://localhost:3001/api/auth/freelancer-delete", {
+    const res = await fetch("http://localhost:3001/api/auth/recruiter-delete", {
       method: "DELETE",
       credentials: "include",
     });
