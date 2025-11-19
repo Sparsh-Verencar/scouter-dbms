@@ -126,6 +126,7 @@ export default function OngoingJobs() {
             <div className={innerCardStyle}>
               <h3 className="text-2xl font-semibold">{job.title}</h3>
               <p className="text-neutral-500">{job.location}</p>
+              <p className="text-neutral-500">{job.salary}</p>
               <p className="text-neutral-700 dark:text-neutral-400 mt-2 line-clamp-2">
                 {job._description}
               </p>
@@ -164,6 +165,7 @@ export default function OngoingJobs() {
                 <div className="bg-white dark:bg-neutral-900 rounded-2xl max-w-lg w-full p-6 shadow-xl">
                   <h2 className="text-2xl font-bold mb-2">{activeJob.title}</h2>
                   <p className="text-neutral-500 mb-2">{activeJob.location}</p>
+                  <p className="text-neutral-500 mb-2">{activeJob.salary}</p>
                   <p className="text-neutral-700 dark:text-neutral-300 mb-4">
                     {activeJob._description}
                   </p>

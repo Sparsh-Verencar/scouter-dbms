@@ -117,6 +117,7 @@ export default function CompletedJobs() {
             <div className={innerCardStyle}>
               <h3 className="text-xl font-semibold">{job.title}</h3>
               <p className="text-neutral-500 mt-1">{job.location}</p>
+              <p className="text-neutral-500 mt-1">{job.salary}</p>
 
               <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-2 line-clamp-2">
                 {job._description}
@@ -157,6 +158,7 @@ export default function CompletedJobs() {
                 <div className={innerCardStyle}>
                   <h2 className="text-2xl font-bold">{activeJob.title}</h2>
                   <p className="text-neutral-500 mb-3">{activeJob.location}</p>
+                  <p className="text-neutral-500 mb-3">{activeJob.salary}</p>
 
                   <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">
                     {activeJob._description}
