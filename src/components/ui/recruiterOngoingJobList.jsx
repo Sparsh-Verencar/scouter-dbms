@@ -86,13 +86,13 @@ export default function RecruiterOngoingJobs() {
               <h2 className="text-2xl font-bold mb-2">{activeJob.title}</h2>
               <p className="text-neutral-500 mb-2">{activeJob.location}</p>
               <p className="text-neutral-700 dark:text-neutral-300 mb-4">
-                {activeJob._description}
+                description: {activeJob._description}
               </p>
               <p className="text-neutral-700 dark:text-neutral-300 mb-4">
-                {activeJob.salary}
+                salary: {activeJob.salary}
               </p>
               <p className="text-neutral-700 dark:text-neutral-300 mb-4">
-                {activeJob.full_name}
+                freelancer name: {activeJob.full_name}
               </p>
               <button
                 onClick={() => setActiveJob(null)}
