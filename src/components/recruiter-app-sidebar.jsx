@@ -55,7 +55,7 @@ const data = {
         },
         {
           title: "Finished Jobs",
-          url: "/recruiter-dashboard/jobs/finished-jobs",
+          url: "/recruiter-dashboard/jobs/completed-jobs",
         },
       ],
     },
